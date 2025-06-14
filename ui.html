@@ -22,17 +22,20 @@
       padding: 20px;
       width: 100%;
       max-width: 360px;
-      min-height: 340px;
+      height: 440px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      justify-content: space-between;
     }
 
     .content-container {
       display: flex;
       flex-direction: column;
       gap: 16px;
-      flex: 1;
+    }
+
+    .button-container {
+      flex-shrink: 0;
     }
 
     .header {
@@ -293,10 +296,10 @@
 
     .thumbnail-preview {
       width: 280px;
-      height: 140px;
+      height: 170px;
       background: #ffffff;
       border-radius: 8px;
-      padding: 16px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -325,14 +328,29 @@
       width: 40px;
       height: 40px;
       margin: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-emoji.has-image {
+      font-size: 0;
+      padding: 0;
     }
 
     .preview-emoji:hover {
-      background: rgba(0, 0, 0, 0.05);
+      background-color: rgba(0, 0, 0, 0.05);
     }
 
     .thumbnail-preview.dark-theme .preview-emoji:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .preview-emoji.has-image:hover {
+      background-color: transparent;
+      transform: scale(1.05);
     }
 
     .preview-content {
@@ -456,9 +474,9 @@
       background: #ffffff;
       border-radius: 12px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      max-width: 300px;
+      max-width: 320px;
       width: calc(100% - 40px);
-      max-height: 80vh;
+      max-height: 85vh;
       display: flex;
       flex-direction: column;
       transform: scale(0.9);
@@ -473,8 +491,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 20px 0 20px;
-      margin-bottom: 16px;
+      padding: 16px 16px 0 16px;
+      margin-bottom: 12px;
     }
 
     .emoji-popup-header h3 {
@@ -508,7 +526,7 @@
     }
 
     .emoji-search-container {
-      padding: 0 20px 16px 20px;
+      padding: 0 16px 12px 16px;
     }
 
     .emoji-search-input {
@@ -534,12 +552,49 @@
       color: #999999;
     }
 
+    .emoji-upload-container {
+      padding: 0 16px 12px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 12px;
+    }
+
+    .emoji-upload-btn {
+      width: 100%;
+      padding: 8px 12px;
+      background: #f8f8f8;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: inherit;
+    }
+
+    .emoji-upload-btn:hover {
+      background: #f0f0f0;
+      border-color: #d0d0d0;
+    }
+
+    .emoji-upload-info {
+      font-size: 10px;
+      color: #999999;
+      text-align: center;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
     .emoji-popup-grid {
       display: grid;
       grid-template-columns: repeat(8, 1fr);
-      gap: 6px;
-      padding: 0 20px 20px 20px;
-      max-height: 300px;
+      gap: 4px;
+      padding: 0 16px 16px 16px;
+      max-height: 320px;
       overflow-y: auto;
       overflow-x: hidden;
       width: 100%;
@@ -568,13 +623,13 @@
 
     .emoji-popup-item {
       width: 100%;
-      aspect-ratio: 1;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 18px;
       cursor: pointer;
-      border-radius: 6px;
+      border-radius: 4px;
       transition: all 0.15s ease;
       border: 1px solid transparent;
       background: #ffffff;
@@ -597,9 +652,9 @@
     .emoji-no-results {
       grid-column: 1 / -1;
       text-align: center;
-      padding: 20px;
+      padding: 16px;
       color: #999999;
-      font-size: 14px;
+      font-size: 13px;
       font-style: italic;
     }
 
@@ -654,13 +709,13 @@
           </button>
         </div>
       </div>
+    </div>
 
-      <div class="form-group">
-        <button class="btn btn-primary" id="create" disabled>
-          <span>✨</span>
-          Create Thumbnail
-        </button>
-      </div>
+    <div class="button-container">
+      <button class="btn btn-primary" id="create" disabled>
+        <span>✨</span>
+        Create Thumbnail
+      </button>
     </div>
   </div>
 
@@ -679,6 +734,20 @@
           placeholder="Search for emojis..."
           spellcheck="false"
         >
+      </div>
+      <div class="emoji-upload-container">
+        <button class="emoji-upload-btn" id="emoji-upload-btn">
+          📁 Upload Custom Image
+        </button>
+        <input 
+          type="file" 
+          id="emoji-upload-input" 
+          accept="image/*" 
+          style="display: none;"
+        >
+        <div class="emoji-upload-info">
+          Images, min 224px (any dimensions)
+        </div>
       </div>
       <div class="emoji-popup-grid" id="emoji-popup-grid">
         <!-- Emojis will be populated by JavaScript -->
@@ -805,7 +874,10 @@
     const pluginState = {
       selectedEmoji: '🚀',
       selectedTheme: 'light',
-      isFormValid: false
+      isFormValid: false,
+      customImage: null, // {data: Uint8Array, name: string, width: number, height: number}
+      isUsingCustomImage: false,
+      customImageUrl: null // URL for preview display
     };
 
     /**
@@ -820,7 +892,9 @@
       emojiPopup: null,
       emojiPopupGrid: null,
       emojiPopupClose: null,
-      emojiSearch: null
+      emojiSearch: null,
+      emojiUploadBtn: null,
+      emojiUploadInput: null
     };
 
     /**
@@ -836,6 +910,8 @@
       elements.emojiPopupGrid = document.getElementById('emoji-popup-grid');
       elements.emojiPopupClose = document.getElementById('emoji-popup-close');
       elements.emojiSearch = document.getElementById('emoji-search');
+      elements.emojiUploadBtn = document.getElementById('emoji-upload-btn');
+      elements.emojiUploadInput = document.getElementById('emoji-upload-input');
     }
 
     /**
@@ -908,6 +984,16 @@
       emojiElement.classList.add('selected');
       pluginState.selectedEmoji = emoji;
       
+      // Clean up custom image when switching to emoji
+      if (pluginState.customImageUrl) {
+        URL.revokeObjectURL(pluginState.customImageUrl);
+      }
+      
+      // Switch back to emoji mode
+      pluginState.isUsingCustomImage = false;
+      pluginState.customImage = null;
+      pluginState.customImageUrl = null;
+      
       // Update preview
       updatePreview();
       
@@ -964,6 +1050,116 @@
     }
 
     /**
+     * Handle image upload button click
+     */
+    function handleUploadButtonClick() {
+      if (elements.emojiUploadInput) {
+        elements.emojiUploadInput.click();
+      }
+    }
+
+    /**
+     * Validate uploaded image
+     */
+    function validateImage(file, width, height) {
+      const errors = [];
+      
+      // Check if it's an image
+      if (!file.type.startsWith('image/')) {
+        errors.push('Please select an image file');
+      }
+      
+      // Check minimum size (use smaller dimension)
+      const minDimension = Math.min(width, height);
+      if (minDimension < 224) {
+        errors.push('Image must be at least 224px on the smaller side');
+      }
+      
+      // Check file size (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        errors.push('Image file size must be less than 10MB');
+      }
+      
+      return errors;
+    }
+
+    /**
+     * Handle image upload
+     */
+    async function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      try {
+        // Create image element to get dimensions
+        const img = new Image();
+        const imageUrl = URL.createObjectURL(file);
+        
+        img.onload = async function() {
+          const errors = validateImage(file, img.width, img.height);
+          
+          if (errors.length > 0) {
+            alert('Image validation failed:\n• ' + errors.join('\n• '));
+            URL.revokeObjectURL(imageUrl);
+            return;
+          }
+          
+          try {
+            // Read file as ArrayBuffer
+            const arrayBuffer = await file.arrayBuffer();
+            const uint8Array = new Uint8Array(arrayBuffer);
+            
+            // Clean up previous image URL if exists
+            if (pluginState.customImageUrl) {
+              URL.revokeObjectURL(pluginState.customImageUrl);
+            }
+            
+            // Store custom image data and URL for preview
+            pluginState.customImage = {
+              data: uint8Array,
+              name: file.name,
+              width: img.width,
+              height: img.height
+            };
+            pluginState.isUsingCustomImage = true;
+            pluginState.customImageUrl = imageUrl; // Keep URL for preview
+            
+            // Update preview to show custom image
+            updatePreview();
+            
+            // Close popup
+            closeEmojiPopup();
+            
+            console.log('Custom image uploaded successfully:', {
+              name: file.name,
+              size: `${img.width}×${img.height}`,
+              fileSize: (file.size / 1024).toFixed(1) + ' KB'
+            });
+            
+          } catch (error) {
+            console.error('Error processing image:', error);
+            alert('Failed to process image. Please try again.');
+            URL.revokeObjectURL(imageUrl);
+          }
+        };
+        
+        img.onerror = function() {
+          URL.revokeObjectURL(imageUrl);
+          alert('Failed to load image. Please select a valid image file.');
+        };
+        
+        img.src = imageUrl;
+        
+      } catch (error) {
+        console.error('Error handling image upload:', error);
+        alert('Failed to upload image. Please try again.');
+      }
+      
+      // Clear input for next upload
+      event.target.value = '';
+    }
+
+    /**
      * Initialize theme toggle functionality
      */
     function initializeThemeToggle() {
@@ -1010,15 +1206,25 @@
     }
 
     /**
-     * Update preview theme and emoji
+     * Update preview theme and emoji/image
      */
     function updatePreview() {
       if (!elements.previewEmoji || !elements.thumbnailPreview) {
         return;
       }
 
-      // Update emoji
-      elements.previewEmoji.textContent = pluginState.selectedEmoji;
+      // Update emoji or custom image
+      if (pluginState.isUsingCustomImage && pluginState.customImageUrl) {
+        // Show custom image
+        elements.previewEmoji.style.backgroundImage = `url(${pluginState.customImageUrl})`;
+        elements.previewEmoji.textContent = '';
+        elements.previewEmoji.classList.add('has-image');
+      } else {
+        // Show emoji
+        elements.previewEmoji.style.backgroundImage = '';
+        elements.previewEmoji.textContent = pluginState.selectedEmoji;
+        elements.previewEmoji.classList.remove('has-image');
+      }
 
       // Update theme
       if (pluginState.selectedTheme === 'dark') {
@@ -1038,7 +1244,8 @@
         title: elements.previewTitle.textContent.trim(),
         description: elements.previewDescription.textContent.trim(),
         emoji: pluginState.selectedEmoji,
-        theme: pluginState.selectedTheme
+        theme: pluginState.selectedTheme,
+        customImage: pluginState.isUsingCustomImage ? pluginState.customImage : null
       };
 
       // Send message to plugin
@@ -1076,6 +1283,14 @@
       
       if (elements.emojiSearch) {
         elements.emojiSearch.addEventListener('input', handleEmojiSearch);
+      }
+      
+      if (elements.emojiUploadBtn) {
+        elements.emojiUploadBtn.addEventListener('click', handleUploadButtonClick);
+      }
+      
+      if (elements.emojiUploadInput) {
+        elements.emojiUploadInput.addEventListener('change', handleImageUpload);
       }
       
       if (elements.emojiPopup) {
@@ -1168,12 +1383,25 @@
       updatePreview();
     }
 
+    /**
+     * Cleanup function to prevent memory leaks
+     */
+    function cleanup() {
+      if (pluginState.customImageUrl) {
+        URL.revokeObjectURL(pluginState.customImageUrl);
+        pluginState.customImageUrl = null;
+      }
+    }
+
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initialize);
     } else {
       initialize();
     }
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', cleanup);
   </script>
 </body>
 </html>

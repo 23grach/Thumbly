@@ -9,7 +9,7 @@
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 
 // Show the HTML UI
-figma.showUI(__html__, { width: 320, height: 400 });
+figma.showUI(__html__, { width: 320, height: 440 });
 
 /**
  * Interface for thumbnail data
@@ -19,6 +19,12 @@ interface ThumbnailData {
   description: string;
   emoji: string;
   theme: 'light' | 'dark';
+  customImage?: {
+    data: Uint8Array;
+    name: string;
+    width: number;
+    height: number;
+  } | null;
 }
 
 /**
@@ -248,6 +254,54 @@ function createEmojiNode(emoji: string, theme: ThemeColors): TextNode {
 }
 
 /**
+ * Create custom image node with fixed 224x224 size
+ */
+async function createCustomImageNode(imageData: Uint8Array, imageName: string): Promise<FrameNode> {
+  try {
+    // Create image from data
+    const image = figma.createImage(imageData);
+    
+    // Always use fixed size for custom images
+    const targetSize = FRAME_CONFIG.emoji.size; // 224px
+    
+    // Create rectangle to hold the image
+    const imageFrame = figma.createFrame();
+    imageFrame.name = `Custom Image: ${imageName}`;
+    imageFrame.resize(targetSize, targetSize);
+    imageFrame.fills = [
+      {
+        type: 'IMAGE',
+        imageHash: image.hash,
+        scaleMode: 'FILL'
+      }
+    ];
+    
+    // Add rounded corners for custom images
+    imageFrame.cornerRadius = 16;
+    
+    // Remove stroke and other styling
+    imageFrame.strokes = [];
+    imageFrame.strokeWeight = 0;
+    
+    return imageFrame;
+  } catch (error) {
+    console.error('Error creating custom image:', error);
+    throw new Error('Failed to create custom image');
+  }
+}
+
+/**
+ * Create emoji or custom image node based on data
+ */
+async function createEmojiOrImageNode(data: ThumbnailData, theme: ThemeColors): Promise<TextNode | FrameNode> {
+  if (data.customImage) {
+    return await createCustomImageNode(data.customImage.data, data.customImage.name);
+  } else {
+    return createEmojiNode(data.emoji, theme);
+  }
+}
+
+/**
  * Create the title text node
  */
 function createTitleNode(title: string, theme: ThemeColors): TextNode {
@@ -340,9 +394,9 @@ async function createThumbnailFrame(data: ThumbnailData): Promise<FrameNode> {
   frame.primaryAxisSizingMode = 'FIXED';
   frame.counterAxisSizingMode = 'FIXED';
   
-  // Create and add emoji node
-  const emojiNode = createEmojiNode(data.emoji, theme);
-  frame.appendChild(emojiNode);
+  // Create and add emoji or custom image node
+  const emojiOrImageNode = await createEmojiOrImageNode(data, theme);
+  frame.appendChild(emojiOrImageNode);
   
   // Create and add text frame
   const textFrame = createTextFrame(data.title, data.description, theme);
