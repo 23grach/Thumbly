@@ -9,69 +9,94 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f8f9fa;
-      height: 100vh;
-      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #ffffff;
+      color: #1a1a1a;
+      font-size: 14px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
     }
 
     .container {
       padding: 20px;
-      max-width: 320px;
-      height: 100vh;
+      width: 100%;
+      max-width: 360px;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: space-between;
+    }
+
+    .content-container {
       display: flex;
       flex-direction: column;
       gap: 16px;
+      flex: 1;
     }
 
     .header {
-      text-align: center;
-      margin-bottom: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .header h1 {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
       color: #1a1a1a;
-      margin-bottom: 4px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .header .app-icon {
+      font-size: 20px;
     }
 
     .header p {
       font-size: 13px;
-      color: #6b7280;
+      color: #666666;
+      margin: 0;
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     .form-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: #374151;
+      font-size: 11px;
+      font-weight: 600;
+      color: #666666;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      margin: 0;
     }
 
     .form-input {
-      padding: 12px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      font-size: 14px;
-      background: white;
-      transition: all 0.2s;
+      padding: 10px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 13px;
+      background: #ffffff;
+      transition: all 0.15s ease;
+      font-family: inherit;
+      line-height: 1.4;
     }
 
     .form-input:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      border-color: #007AFF;
+      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
     }
 
     .form-input::placeholder {
-      color: #9ca3af;
+      color: #999999;
     }
 
     .textarea {
@@ -80,192 +105,266 @@
       font-family: inherit;
     }
 
+    .emoji-section {
+      background: #f8f8f8;
+      border: 1px solid #f0f0f0;
+      border-radius: 6px;
+      padding: 12px;
+    }
+
     .emoji-grid {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-      padding: 12px;
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 6px;
+      margin-top: 8px;
       max-height: 120px;
       overflow-y: auto;
+      overflow-x: hidden;
     }
 
     .emoji-item {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 14px;
       cursor: pointer;
-      border-radius: 6px;
-      transition: all 0.2s;
-      border: 2px solid transparent;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+      background: #ffffff;
+      flex-shrink: 0;
     }
 
     .emoji-item:hover {
-      background: #f3f4f6;
+      background: #f0f0f0;
+      border-color: #e0e0e0;
+      transform: scale(1.05);
     }
 
     .emoji-item.selected {
-      background: #dbeafe;
-      border-color: #3b82f6;
+      background: #007AFF;
+      border-color: #007AFF;
+      transform: scale(1.05);
     }
 
     .theme-toggle {
       display: flex;
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
+      background: #f8f8f8;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
       overflow: hidden;
+      margin-top: 4px;
     }
 
     .theme-option {
       flex: 1;
-      padding: 10px 16px;
+      padding: 10px 12px;
       background: none;
       border: none;
       cursor: pointer;
       font-size: 13px;
       font-weight: 500;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+      color: #1a1a1a;
     }
 
     .theme-option.active {
-      background: #3b82f6;
+      background: #007AFF;
       color: white;
-    }
-
-    .theme-option:not(.active) {
-      color: #6b7280;
     }
 
     .theme-option:not(.active):hover {
-      background: #f3f4f6;
+      background: #f0f0f0;
     }
 
-    .buttons {
-      margin-top: auto;
+    .actions-container {
       display: flex;
+      flex-direction: column;
+      width: 100%;
       gap: 8px;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 16px;
     }
 
     .btn {
-      flex: 1;
-      padding: 12px 16px;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      padding: 10px 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 13px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
+      background: #ffffff;
+      color: #1a1a1a;
+      font-family: inherit;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: #f8f8f8;
+      border-color: #d0d0d0;
     }
 
     .btn-primary {
-      background: #3b82f6;
+      background: #007AFF;
       color: white;
+      border-color: #007AFF;
     }
 
     .btn-primary:hover:not(:disabled) {
-      background: #2563eb;
+      background: #0056CC;
+      border-color: #0056CC;
     }
 
-    .btn-primary:disabled {
-      background: #9ca3af;
+    .btn:disabled {
+      opacity: 0.4;
       cursor: not-allowed;
+      background: #f5f5f5;
+      color: #999999;
+      border-color: #e0e0e0;
     }
 
-    .btn-secondary {
-      background: #f3f4f6;
-      color: #6b7280;
-    }
-
-    .btn-secondary:hover {
-      background: #e5e7eb;
+    .btn:disabled:hover {
+      background: #f5f5f5;
+      border-color: #e0e0e0;
     }
 
     .required {
-      color: #ef4444;
+      color: #FF3B30;
+    }
+
+    .component-tag {
+      background: #E8F5E8;
+      color: #2E7B32;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      margin-right: 6px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>Thumbly</h1>
-      <p>Создайте красивый thumbnail для вашего контента</p>
-    </div>
+    <div class="content-container">
+      <div class="header">
+        <h1>
+          <span class="app-icon">🎨</span>
+          Thumbly
+        </h1>
+        <p>Create beautiful project thumbnails</p>
+      </div>
 
-    <div class="form-group">
-      <label class="form-label">
-        Заголовок <span class="required">*</span>
-      </label>
-      <input 
-        type="text" 
-        id="title" 
-        class="form-input" 
-        placeholder="Введите заголовок..."
-        maxlength="50"
-        required
-      >
-    </div>
+      <div class="form-group">
+        <label class="form-label">
+          Title <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="title" 
+          class="form-input" 
+          placeholder="Project name..."
+          maxlength="50"
+          required
+        >
+      </div>
 
-    <div class="form-group">
-      <label class="form-label">Описание</label>
-      <textarea 
-        id="description" 
-        class="form-input textarea" 
-        placeholder="Добавьте описание (необязательно)..."
-        maxlength="120"
-      ></textarea>
-    </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea 
+          id="description" 
+          class="form-input textarea" 
+          placeholder="Brief project description..."
+          maxlength="120"
+        ></textarea>
+      </div>
 
-    <div class="form-group">
-      <label class="form-label">Эмодзи</label>
-      <div class="emoji-grid" id="emoji-grid">
-        <!-- Эмодзи будут добавлены через JavaScript -->
+      <div class="form-group">
+        <label class="form-label">
+          <span class="component-tag">Icon</span>
+          Choose emoji for project
+        </label>
+        <div class="emoji-section">
+          <div class="emoji-grid" id="emoji-grid">
+            <!-- Emojis will be added through JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Theme</label>
+        <div class="theme-toggle">
+          <button class="theme-option active" data-theme="light">
+            ☀️ Light
+          </button>
+          <button class="theme-option" data-theme="dark">
+            🌙 Dark
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Тема</label>
-      <div class="theme-toggle">
-        <button class="theme-option active" data-theme="light">
-          🌞 Светлая
-        </button>
-        <button class="theme-option" data-theme="dark">
-          🌚 Тёмная
-        </button>
-      </div>
-    </div>
-
-    <div class="buttons">
-      <button class="btn btn-secondary" id="cancel">Отмена</button>
-      <button class="btn btn-primary" id="create" disabled>Создать</button>
+    <div class="actions-container">
+      <button class="btn btn-primary" id="create" disabled>
+        <span>✨</span>
+        Create Thumbnail
+      </button>
     </div>
   </div>
 
   <script>
-    // Список эмодзи
+    // Extended emoji list for projects and development
     const emojiList = [
-      '🚀', '⭐', '💡', '🔥', '❤️', '👍',
-      '🎯', '📈', '🏆', '💯', '🌟', '⚡',
-      '🎨', '📱', '💻', '🖥️', '⌚', '🎮',
-      '📚', '🎓', '🔬', '🧠', '💰', '💎',
-      '🌍', '🌈', '☀️', '🌙', '🎉', '🎊',
-      '🏠', '🚗', '✈️', '🎸', '🎵', '🎪'
+      // Development and technology
+      '💻', '🖥️', '⌨️', '🖱️', '💾', '💿', '📱', '⌚', 
+      '🔌', '🔋', '💡', '🔧', '⚙️', '🛠️', '🔩', '⚡',
+      
+      // Web and design
+      '🌐', '🎨', '🖼️', '📐', '📏', '✏️', '🖊️', '🖍️',
+      '🎭', '🖌️', '📷', '📸', '🎬', '🎞️', '📹', '🎪',
+      
+      // Business and success
+      '🚀', '📈', '📊', '💰', '💎', '🏆', '🥇', '⭐',
+      '🎯', '🎪', '💯', '🔥', '⚡', '💪', '👑', '🌟',
+      
+      // Science and education
+      '🔬', '🧪', '🧬', '📚', '📖', '🎓', '🧠', '💭',
+      '🔍', '🔎', '📝', '📊', '📋', '📌', '📍', '🗂️',
+      
+      // Communication and social media
+      '📢', '📣', '📡', '📺', '📻', '☎️', '📞', '💬',
+      '💌', '📧', '📨', '📩', '📤', '📥', '📮', '🗳️',
+      
+      // Food and drinks (for culinary projects)
+      '🍕', '🍔', '🌮', '🍜', '🍰', '🍪', '☕', '🍵',
+      
+      // Travel and places
+      '✈️', '🚗', '🚢', '🏠', '🏢', '🌍', '🗺️', '🧭',
+      
+      // Health and sports
+      '⚽', '🏀', '🎾', '⛳', '🏋️', '🤸', '🧘', '❤️',
+      
+      // Music and entertainment
+      '🎵', '🎶', '🎸', '🎹', '🎤', '🎧', '🎮', '🕹️'
     ];
 
     let selectedEmoji = '🚀';
     let selectedTheme = 'light';
 
-    // Инициализация эмодзи
+    // Initialize emojis
     function initEmojis() {
       const emojiGrid = document.getElementById('emoji-grid');
       emojiList.forEach((emoji, index) => {
@@ -286,7 +385,7 @@
       });
     }
 
-    // Инициализация темы
+    // Initialize theme
     function initTheme() {
       document.querySelectorAll('.theme-option').forEach(option => {
         option.addEventListener('click', () => {
@@ -299,7 +398,7 @@
       });
     }
 
-    // Валидация формы
+    // Form validation
     function validateForm() {
       const title = document.getElementById('title').value.trim();
       const createBtn = document.getElementById('create');
@@ -311,7 +410,7 @@
       }
     }
 
-    // Обработчики событий
+    // Event handlers
     document.getElementById('title').addEventListener('input', validateForm);
 
     document.getElementById('create').addEventListener('click', () => {
@@ -319,7 +418,6 @@
       const description = document.getElementById('description').value.trim();
       
       if (!title) {
-        alert('Пожалуйста, введите заголовок');
         return;
       }
 
@@ -336,11 +434,7 @@
       }, '*');
     });
 
-    document.getElementById('cancel').addEventListener('click', () => {
-      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
-    });
-
-    // Инициализация
+    // Initialization
     initEmojis();
     initTheme();
     validateForm();
