@@ -9,7 +9,7 @@
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 
 // Show the HTML UI
-figma.showUI(__html__, { width: 320, height: 800 });
+figma.showUI(__html__, { width: 320, height: 400 });
 
 /**
  * Interface for thumbnail data
@@ -399,6 +399,7 @@ figma.ui.onmessage = async (msg: { type: string; data?: ThumbnailData }) => {
         
       case 'cancel':
         figma.notify('Thumbnail creation cancelled');
+        figma.closePlugin();
         break;
         
       default:
@@ -409,7 +410,4 @@ figma.ui.onmessage = async (msg: { type: string; data?: ThumbnailData }) => {
     console.error('Plugin error:', error);
     figma.notify('❌ An unexpected error occurred. Check console for details.');
   }
-  
-  // Close the plugin
-  figma.closePlugin();
 };

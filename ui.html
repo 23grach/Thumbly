@@ -22,11 +22,10 @@
       padding: 20px;
       width: 100%;
       max-width: 360px;
-      min-height: 720px;
+      min-height: 340px;
       display: flex;
       flex-direction: column;
       gap: 20px;
-      justify-content: space-between;
     }
 
     .content-container {
@@ -218,14 +217,7 @@
       background: #f0f0f0;
     }
 
-    .actions-container {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      gap: 8px;
-      border-top: 1px solid #f0f0f0;
-      padding-top: 16px;
-    }
+
 
     .btn {
       display: flex;
@@ -323,8 +315,24 @@
       font-size: 28px;
       line-height: 1;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
+      justify-content: center;
       flex-shrink: 0;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      width: 40px;
+      height: 40px;
+      margin: 0;
+    }
+
+    .preview-emoji:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .thumbnail-preview.dark-theme .preview-emoji:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .preview-content {
@@ -345,6 +353,36 @@
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+      outline: none;
+      border-radius: 3px;
+      padding: 2px 4px;
+      margin: -2px -4px;
+      cursor: text;
+      transition: all 0.15s ease;
+      word-break: break-word;
+    }
+
+    .preview-title:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .preview-title:focus {
+      background: rgba(0, 122, 255, 0.1);
+      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+    }
+
+    .preview-title:empty:before {
+      content: attr(data-placeholder);
+      color: rgba(0, 0, 0, 0.4);
+      font-style: italic;
+    }
+
+    .thumbnail-preview.dark-theme .preview-title:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .thumbnail-preview.dark-theme .preview-title:empty:before {
+      color: rgba(255, 255, 255, 0.4);
     }
 
     .preview-description {
@@ -359,8 +397,211 @@
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+      outline: none;
+      border-radius: 3px;
+      padding: 2px 4px;
+      margin: -2px -4px;
+      cursor: text;
+      transition: all 0.15s ease;
+      word-break: break-word;
     }
 
+    .preview-description:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .preview-description:focus {
+      background: rgba(0, 122, 255, 0.1);
+      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+      opacity: 1;
+    }
+
+    .preview-description:empty:before {
+      content: attr(data-placeholder);
+      color: rgba(0, 0, 0, 0.4);
+      font-style: italic;
+    }
+
+    .thumbnail-preview.dark-theme .preview-description:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .thumbnail-preview.dark-theme .preview-description:empty:before {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Emoji Popup Styles */
+    .emoji-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+    }
+
+    .emoji-popup.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .emoji-popup-content {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      width: calc(100% - 40px);
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.9);
+      transition: transform 0.2s ease;
+    }
+
+    .emoji-popup.active .emoji-popup-content {
+      transform: scale(1);
+    }
+
+    .emoji-popup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px 0 20px;
+      margin-bottom: 16px;
+    }
+
+    .emoji-popup-header h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin: 0;
+    }
+
+    .emoji-popup-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: #f5f5f5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      color: #666666;
+      transition: all 0.15s ease;
+      line-height: 1;
+      padding: 0;
+      margin: 0;
+    }
+
+    .emoji-popup-close:hover {
+      background: #e0e0e0;
+      color: #1a1a1a;
+    }
+
+    .emoji-search-container {
+      padding: 0 20px 16px 20px;
+    }
+
+    .emoji-search-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+      background: #f8f8f8;
+      transition: all 0.15s ease;
+      font-family: inherit;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    .emoji-search-input:focus {
+      border-color: #007AFF;
+      background: #ffffff;
+      box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+    }
+
+    .emoji-search-input::placeholder {
+      color: #999999;
+    }
+
+    .emoji-popup-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 6px;
+      padding: 0 20px 20px 20px;
+      max-height: 300px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Custom scrollbar for popup grid */
+    .emoji-popup-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .emoji-popup-grid::-webkit-scrollbar-track {
+      background: #f8f8f8;
+      border-radius: 3px;
+    }
+
+    .emoji-popup-grid::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 3px;
+      transition: background-color 0.2s ease;
+    }
+
+    .emoji-popup-grid::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
+    }
+
+    .emoji-popup-item {
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+      background: #ffffff;
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    .emoji-popup-item:hover {
+      background: #f0f0f0;
+      border-color: #e0e0e0;
+      transform: scale(1.1);
+    }
+
+    .emoji-popup-item.selected {
+      background: #007AFF;
+      border-color: #007AFF;
+      transform: scale(1.1);
+    }
+
+    .emoji-no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 20px;
+      color: #999999;
+      font-size: 14px;
+      font-style: italic;
+    }
 
   </style>
 </head>
@@ -377,53 +618,30 @@
 
       <!-- Preview Section -->
       <div class="preview-section">
-        <div class="thumbnail-preview" id="thumbnail-preview">
-          <div class="preview-emoji" id="preview-emoji">🚀</div>
-          <div class="preview-content">
-            <div class="preview-title" id="preview-title">Project Title</div>
-            <div class="preview-description" id="preview-description">Enter project description</div>
+                  <div class="thumbnail-preview" id="thumbnail-preview">
+            <div class="preview-emoji" id="preview-emoji">🚀</div>
+            <div class="preview-content">
+              <div 
+                class="preview-title" 
+                id="preview-title" 
+                contenteditable="true" 
+                data-placeholder="Project Title"
+                spellcheck="false"
+              >Project Title</div>
+              <div 
+                class="preview-description" 
+                id="preview-description" 
+                contenteditable="true" 
+                data-placeholder="Enter project description"
+                spellcheck="false"
+              >Enter project description</div>
+            </div>
           </div>
-        </div>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">
-          <span>Title <span class="required">*</span></span>
-          <span class="char-counter" id="title-counter">0/20</span>
-        </label>
-        <input 
-          type="text" 
-          id="title" 
-          class="form-input" 
-          placeholder="Enter project title..."
-          maxlength="20"
-          required
-        >
-      </div>
 
-      <div class="form-group">
-        <label class="form-label">
-          <span>Description</span>
-          <span class="char-counter" id="description-counter">0/40</span>
-        </label>
-        <textarea 
-          id="description" 
-          class="form-input textarea" 
-          placeholder="Add a brief description..."
-          maxlength="40"
-        ></textarea>
-      </div>
 
-      <div class="form-group">
-        <label class="form-label">
-          <span>Project Emoji</span>
-        </label>
-        <div class="emoji-section">
-          <div class="emoji-grid" id="emoji-grid">
-            <!-- Emojis will be populated by JavaScript -->
-          </div>
-        </div>
-      </div>
+
 
       <div class="form-group">
         <label class="form-label">Theme</label>
@@ -436,13 +654,35 @@
           </button>
         </div>
       </div>
-    </div>
 
-    <div class="actions-container">
-      <button class="btn btn-primary" id="create" disabled>
-        <span>✨</span>
-        Create Thumbnail
-      </button>
+      <div class="form-group">
+        <button class="btn btn-primary" id="create" disabled>
+          <span>✨</span>
+          Create Thumbnail
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emoji Picker Popup -->
+  <div class="emoji-popup" id="emoji-popup">
+    <div class="emoji-popup-content">
+      <div class="emoji-popup-header">
+        <h3>Choose Emoji</h3>
+        <button class="emoji-popup-close" id="emoji-popup-close">✕</button>
+      </div>
+      <div class="emoji-search-container">
+        <input 
+          type="text" 
+          id="emoji-search" 
+          class="emoji-search-input" 
+          placeholder="Search for emojis..."
+          spellcheck="false"
+        >
+      </div>
+      <div class="emoji-popup-grid" id="emoji-popup-grid">
+        <!-- Emojis will be populated by JavaScript -->
+      </div>
     </div>
   </div>
 
@@ -508,6 +748,58 @@
     const ALL_EMOJIS = Object.values(EMOJI_CATEGORIES).flat();
 
     /**
+     * Emoji search keywords for better search functionality
+     */
+    const EMOJI_KEYWORDS = {
+      '💻': ['laptop', 'computer', 'code', 'development', 'tech'],
+      '🖥️': ['desktop', 'computer', 'monitor', 'screen'],
+      '⌨️': ['keyboard', 'typing', 'input'],
+      '🖱️': ['mouse', 'click', 'pointer'],
+      '💾': ['save', 'disk', 'storage', 'floppy'],
+      '💿': ['cd', 'disc', 'music', 'data'],
+      '📱': ['phone', 'mobile', 'smartphone', 'app'],
+      '⌚': ['watch', 'time', 'smartwatch'],
+      '🔌': ['plug', 'power', 'electricity'],
+      '🔋': ['battery', 'power', 'energy'],
+      '💡': ['idea', 'light', 'bulb', 'innovation'],
+      '🔧': ['tool', 'wrench', 'fix', 'repair'],
+      '⚙️': ['settings', 'gear', 'config', 'options'],
+      '🛠️': ['tools', 'build', 'construct', 'repair'],
+      '🔩': ['screw', 'hardware', 'build'],
+      '⚡': ['lightning', 'fast', 'speed', 'energy'],
+      '🌐': ['web', 'internet', 'global', 'world'],
+      '🎨': ['art', 'design', 'creative', 'paint'],
+      '🖼️': ['picture', 'image', 'frame', 'art'],
+      '📐': ['ruler', 'measure', 'angle', 'geometry'],
+      '📏': ['ruler', 'measure', 'length'],
+      '✏️': ['pencil', 'write', 'draw', 'edit'],
+      '🖊️': ['pen', 'write', 'sign'],
+      '🖍️': ['crayon', 'color', 'draw'],
+      '🎭': ['theater', 'drama', 'mask', 'art'],
+      '🖌️': ['brush', 'paint', 'art', 'design'],
+      '📷': ['camera', 'photo', 'picture'],
+      '📸': ['camera', 'photo', 'snapshot'],
+      '🎬': ['movie', 'film', 'cinema', 'director'],
+      '🎞️': ['film', 'movie', 'reel'],
+      '📹': ['video', 'camera', 'record'],
+      '🎪': ['circus', 'tent', 'entertainment'],
+      '🚀': ['rocket', 'launch', 'startup', 'fast', 'space'],
+      '📈': ['chart', 'growth', 'stats', 'increase'],
+      '📊': ['chart', 'data', 'analytics', 'stats'],
+      '💰': ['money', 'cash', 'profit', 'rich'],
+      '💎': ['diamond', 'precious', 'valuable', 'gem'],
+      '🏆': ['trophy', 'winner', 'award', 'champion'],
+      '🥇': ['gold', 'medal', 'first', 'winner'],
+      '⭐': ['star', 'favorite', 'rating', 'quality'],
+      '🎯': ['target', 'goal', 'bullseye', 'aim'],
+      '💯': ['hundred', 'perfect', 'score', 'complete'],
+      '🔥': ['fire', 'hot', 'trending', 'popular'],
+      '💪': ['strong', 'muscle', 'power', 'fitness'],
+      '👑': ['crown', 'king', 'royal', 'leader'],
+      '🌟': ['star', 'shine', 'sparkle', 'special']
+    };
+
+    /**
      * Plugin state management
      */
     const pluginState = {
@@ -520,69 +812,94 @@
      * DOM element references
      */
     const elements = {
-      titleInput: null,
-      descriptionInput: null,
       createButton: null,
-      titleCounter: null,
-      descriptionCounter: null,
-      emojiGrid: null,
       previewTitle: null,
       previewDescription: null,
       previewEmoji: null,
-      thumbnailPreview: null
+      thumbnailPreview: null,
+      emojiPopup: null,
+      emojiPopupGrid: null,
+      emojiPopupClose: null,
+      emojiSearch: null
     };
 
     /**
      * Initialize DOM element references
      */
     function initializeElements() {
-      elements.titleInput = document.getElementById('title');
-      elements.descriptionInput = document.getElementById('description');
       elements.createButton = document.getElementById('create');
-      elements.titleCounter = document.getElementById('title-counter');
-      elements.descriptionCounter = document.getElementById('description-counter');
-      elements.emojiGrid = document.getElementById('emoji-grid');
       elements.previewTitle = document.getElementById('preview-title');
       elements.previewDescription = document.getElementById('preview-description');
       elements.previewEmoji = document.getElementById('preview-emoji');
       elements.thumbnailPreview = document.getElementById('thumbnail-preview');
+      elements.emojiPopup = document.getElementById('emoji-popup');
+      elements.emojiPopupGrid = document.getElementById('emoji-popup-grid');
+      elements.emojiPopupClose = document.getElementById('emoji-popup-close');
+      elements.emojiSearch = document.getElementById('emoji-search');
     }
 
     /**
-     * Create and populate emoji grid
+     * Create and populate emoji popup grid
      */
-    function initializeEmojiGrid() {
-      if (!elements.emojiGrid) return;
+    function initializeEmojiPopup(searchTerm = '') {
+      if (!elements.emojiPopupGrid) return;
 
-      elements.emojiGrid.innerHTML = '';
+      elements.emojiPopupGrid.innerHTML = '';
       
-      ALL_EMOJIS.forEach((emoji, index) => {
-        const emojiElement = createEmojiElement(emoji, index === 0);
-        elements.emojiGrid.appendChild(emojiElement);
+      const filteredEmojis = filterEmojis(searchTerm);
+      
+      filteredEmojis.forEach((emoji) => {
+        const emojiElement = createEmojiPopupItem(emoji, emoji === pluginState.selectedEmoji);
+        elements.emojiPopupGrid.appendChild(emojiElement);
+      });
+
+      // Show "no results" message if no emojis found
+      if (filteredEmojis.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'emoji-no-results';
+        noResults.textContent = 'No emojis found';
+        elements.emojiPopupGrid.appendChild(noResults);
+      }
+    }
+
+    /**
+     * Filter emojis based on search term
+     */
+    function filterEmojis(searchTerm) {
+      if (!searchTerm.trim()) {
+        return ALL_EMOJIS;
+      }
+
+      const term = searchTerm.toLowerCase();
+      
+      return ALL_EMOJIS.filter(emoji => {
+        // Check if emoji has keywords and if any keyword matches
+        const keywords = EMOJI_KEYWORDS[emoji] || [];
+        return keywords.some(keyword => keyword.includes(term));
       });
     }
 
     /**
-     * Create a single emoji element
+     * Create a single emoji popup item
      */
-    function createEmojiElement(emoji, isSelected = false) {
+    function createEmojiPopupItem(emoji, isSelected = false) {
       const emojiElement = document.createElement('div');
-      emojiElement.className = `emoji-item ${isSelected ? 'selected' : ''}`;
+      emojiElement.className = `emoji-popup-item ${isSelected ? 'selected' : ''}`;
       emojiElement.textContent = emoji;
       emojiElement.setAttribute('data-emoji', emoji);
       emojiElement.setAttribute('title', `Select ${emoji}`);
       
-      emojiElement.addEventListener('click', () => handleEmojiSelection(emoji, emojiElement));
+      emojiElement.addEventListener('click', () => handleEmojiPopupSelection(emoji, emojiElement));
       
       return emojiElement;
     }
 
     /**
-     * Handle emoji selection
+     * Handle emoji selection from popup
      */
-    function handleEmojiSelection(emoji, emojiElement) {
+    function handleEmojiPopupSelection(emoji, emojiElement) {
       // Remove previous selection
-      const previouslySelected = elements.emojiGrid.querySelector('.emoji-item.selected');
+      const previouslySelected = elements.emojiPopupGrid.querySelector('.emoji-popup-item.selected');
       if (previouslySelected) {
         previouslySelected.classList.remove('selected');
       }
@@ -593,6 +910,57 @@
       
       // Update preview
       updatePreview();
+      
+      // Close popup
+      closeEmojiPopup();
+    }
+
+    /**
+     * Open emoji picker popup
+     */
+    function openEmojiPopup() {
+      if (!elements.emojiPopup) return;
+      
+      // Clear search input
+      if (elements.emojiSearch) {
+        elements.emojiSearch.value = '';
+      }
+      
+      // Update popup grid to show current selection
+      initializeEmojiPopup();
+      
+      // Show popup
+      elements.emojiPopup.classList.add('active');
+      
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+      
+      // Focus on search input after a short delay
+      setTimeout(() => {
+        if (elements.emojiSearch) {
+          elements.emojiSearch.focus();
+        }
+      }, 100);
+    }
+
+    /**
+     * Close emoji picker popup
+     */
+    function closeEmojiPopup() {
+      if (!elements.emojiPopup) return;
+      
+      elements.emojiPopup.classList.remove('active');
+      
+      // Restore body scroll
+      document.body.style.overflow = '';
+    }
+
+    /**
+     * Handle emoji search input
+     */
+    function handleEmojiSearch(event) {
+      const searchTerm = event.target.value;
+      initializeEmojiPopup(searchTerm);
     }
 
     /**
@@ -627,13 +995,9 @@
      * Validate form and update UI state
      */
     function validateForm() {
-      if (!elements.titleInput || !elements.descriptionInput) return;
+      if (!elements.previewTitle || !elements.previewDescription) return;
 
-      const title = elements.titleInput.value.trim();
-      const description = elements.descriptionInput.value.trim();
-      
-      // Update character counters
-      updateCharacterCounters(title, description);
+      const title = elements.previewTitle.textContent.trim();
       
       // Validate form
       const isValid = title.length > 0;
@@ -643,39 +1007,17 @@
       if (elements.createButton) {
         elements.createButton.disabled = !isValid;
       }
-      
-      // Update preview
-      updatePreview();
     }
 
     /**
-     * Update character counters
-     */
-    function updateCharacterCounters(title, description) {
-      if (elements.titleCounter) {
-        elements.titleCounter.textContent = `${title.length}/20`;
-      }
-      
-      if (elements.descriptionCounter) {
-        elements.descriptionCounter.textContent = `${description.length}/40`;
-      }
-    }
-
-    /**
-     * Update preview thumbnail in real-time
+     * Update preview theme and emoji
      */
     function updatePreview() {
-      if (!elements.previewTitle || !elements.previewDescription || !elements.previewEmoji || !elements.thumbnailPreview) {
+      if (!elements.previewEmoji || !elements.thumbnailPreview) {
         return;
       }
 
-      // Get current form values
-      const title = elements.titleInput ? elements.titleInput.value.trim() : '';
-      const description = elements.descriptionInput ? elements.descriptionInput.value.trim() : '';
-
-      // Update preview content
-      elements.previewTitle.textContent = title || 'Project Title';
-      elements.previewDescription.textContent = description || 'Enter project description';
+      // Update emoji
       elements.previewEmoji.textContent = pluginState.selectedEmoji;
 
       // Update theme
@@ -693,8 +1035,8 @@
       if (!pluginState.isFormValid) return;
 
       const thumbnailData = {
-        title: elements.titleInput.value.trim(),
-        description: elements.descriptionInput.value.trim(),
+        title: elements.previewTitle.textContent.trim(),
+        description: elements.previewDescription.textContent.trim(),
         emoji: pluginState.selectedEmoji,
         theme: pluginState.selectedTheme
       };
@@ -712,17 +1054,107 @@
      * Initialize event listeners
      */
     function initializeEventListeners() {
-      if (elements.titleInput) {
-        elements.titleInput.addEventListener('input', validateForm);
+      if (elements.previewTitle) {
+        elements.previewTitle.addEventListener('input', handleContentEditableInput);
+        elements.previewTitle.addEventListener('keydown', handleContentEditableKeydown);
+        elements.previewTitle.addEventListener('paste', handleContentEditablePaste);
       }
       
-      if (elements.descriptionInput) {
-        elements.descriptionInput.addEventListener('input', validateForm);
+      if (elements.previewDescription) {
+        elements.previewDescription.addEventListener('input', handleContentEditableInput);
+        elements.previewDescription.addEventListener('keydown', handleContentEditableKeydown);
+        elements.previewDescription.addEventListener('paste', handleContentEditablePaste);
+      }
+      
+      if (elements.previewEmoji) {
+        elements.previewEmoji.addEventListener('click', openEmojiPopup);
+      }
+      
+      if (elements.emojiPopupClose) {
+        elements.emojiPopupClose.addEventListener('click', closeEmojiPopup);
+      }
+      
+      if (elements.emojiSearch) {
+        elements.emojiSearch.addEventListener('input', handleEmojiSearch);
+      }
+      
+      if (elements.emojiPopup) {
+        elements.emojiPopup.addEventListener('click', (e) => {
+          if (e.target === elements.emojiPopup) {
+            closeEmojiPopup();
+          }
+        });
       }
       
       if (elements.createButton) {
         elements.createButton.addEventListener('click', handleFormSubmission);
       }
+      
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && elements.emojiPopup.classList.contains('active')) {
+          closeEmojiPopup();
+        }
+      });
+    }
+
+    /**
+     * Handle contentEditable input changes
+     */
+    function handleContentEditableInput(event) {
+      const element = event.target;
+      const maxLength = element === elements.previewTitle ? 20 : 40;
+      
+      // Limit character count
+      if (element.textContent.length > maxLength) {
+        element.textContent = element.textContent.substring(0, maxLength);
+        
+        // Restore cursor position to end
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.selectNodeContents(element);
+        range.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+      
+      validateForm();
+    }
+
+    /**
+     * Handle keydown events for contentEditable
+     */
+    function handleContentEditableKeydown(event) {
+      // Prevent Enter key from creating new lines
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        
+        // Move to description if currently in title
+        if (event.target === elements.previewTitle) {
+          elements.previewDescription.focus();
+        } else {
+          event.target.blur();
+        }
+      }
+      
+      // Handle Escape key
+      if (event.key === 'Escape') {
+        event.target.blur();
+      }
+    }
+
+    /**
+     * Handle paste events for contentEditable
+     */
+    function handleContentEditablePaste(event) {
+      event.preventDefault();
+      
+      // Get plain text from clipboard
+      const text = (event.clipboardData || window.clipboardData).getData('text/plain');
+      const cleanText = text.replace(/\n/g, ' ').trim();
+      
+      // Insert text without formatting
+      document.execCommand('insertText', false, cleanText);
     }
 
     /**
@@ -730,7 +1162,6 @@
      */
     function initialize() {
       initializeElements();
-      initializeEmojiGrid();
       initializeThemeToggle();
       initializeEventListeners();
       validateForm();
