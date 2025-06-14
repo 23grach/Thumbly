@@ -9,7 +9,7 @@
 // full browser environment (See https://www.figma.com/plugin-docs/how-plugins-run).
 
 // Show the HTML UI
-figma.showUI(__html__, { width: 320, height: 640 });
+figma.showUI(__html__, { width: 320, height: 800 });
 
 /**
  * Interface for thumbnail data
