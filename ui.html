@@ -133,7 +133,7 @@
       overflow-x: hidden;
     }
 
-    /* Beautiful scrollbar for emoji grid */
+    /* Custom scrollbar for emoji grid */
     .emoji-grid::-webkit-scrollbar {
       width: 6px;
     }
@@ -312,7 +312,7 @@
           type="text" 
           id="title" 
           class="form-input" 
-          placeholder="Project name..."
+          placeholder="Enter project title..."
           maxlength="20"
           required
         >
@@ -326,18 +326,18 @@
         <textarea 
           id="description" 
           class="form-input textarea" 
-          placeholder="Brief project description..."
+          placeholder="Add a brief description..."
           maxlength="40"
         ></textarea>
       </div>
 
       <div class="form-group">
         <label class="form-label">
-          <span>Choose emoji for project</span>
+          <span>Project Emoji</span>
         </label>
         <div class="emoji-section">
           <div class="emoji-grid" id="emoji-grid">
-            <!-- Emojis will be added through JavaScript -->
+            <!-- Emojis will be populated by JavaScript -->
           </div>
         </div>
       </div>
@@ -364,127 +364,260 @@
   </div>
 
   <script>
-    // Extended emoji list for projects and development
-    const emojiList = [
-      // Development and technology
-      '💻', '🖥️', '⌨️', '🖱️', '💾', '💿', '📱', '⌚', 
-      '🔌', '🔋', '💡', '🔧', '⚙️', '🛠️', '🔩', '⚡',
+    /**
+     * Emoji collections organized by category
+     */
+    const EMOJI_CATEGORIES = {
+      // Development and Technology
+      development: [
+        '💻', '🖥️', '⌨️', '🖱️', '💾', '💿', '📱', '⌚', 
+        '🔌', '🔋', '💡', '🔧', '⚙️', '🛠️', '🔩', '⚡'
+      ],
       
-      // Web and design
-      '🌐', '🎨', '🖼️', '📐', '📏', '✏️', '🖊️', '🖍️',
-      '🎭', '🖌️', '📷', '📸', '🎬', '🎞️', '📹', '🎪',
+      // Design and Creative
+      design: [
+        '🌐', '🎨', '🖼️', '📐', '📏', '✏️', '🖊️', '🖍️',
+        '🎭', '🖌️', '📷', '📸', '🎬', '🎞️', '📹', '🎪'
+      ],
       
-      // Business and success
-      '🚀', '📈', '📊', '💰', '💎', '🏆', '🥇', '⭐',
-      '🎯', '🎪', '💯', '🔥', '⚡', '💪', '👑', '🌟',
+      // Business and Success
+      business: [
+        '🚀', '📈', '📊', '💰', '💎', '🏆', '🥇', '⭐',
+        '🎯', '🎪', '💯', '🔥', '⚡', '💪', '👑', '🌟'
+      ],
       
-      // Science and education
-      '🔬', '🧪', '🧬', '📚', '📖', '🎓', '🧠', '💭',
-      '🔍', '🔎', '📝', '📊', '📋', '📌', '📍', '🗂️',
+      // Science and Education
+      science: [
+        '🔬', '🧪', '🧬', '📚', '📖', '🎓', '🧠', '💭',
+        '🔍', '🔎', '📝', '📊', '📋', '📌', '📍', '🗂️'
+      ],
       
-      // Communication and social media
-      '📢', '📣', '📡', '📺', '📻', '☎️', '📞', '💬',
-      '💌', '📧', '📨', '📩', '📤', '📥', '📮', '🗳️',
+      // Communication
+      communication: [
+        '📢', '📣', '📡', '📺', '📻', '☎️', '📞', '💬',
+        '💌', '📧', '📨', '📩', '📤', '📥', '📮', '🗳️'
+      ],
       
-      // Food and drinks (for culinary projects)
-      '🍕', '🍔', '🌮', '🍜', '🍰', '🍪', '☕', '🍵',
+      // Food and Lifestyle
+      lifestyle: [
+        '🍕', '🍔', '🌮', '🍜', '🍰', '🍪', '☕', '🍵'
+      ],
       
-      // Travel and places
-      '✈️', '🚗', '🚢', '🏠', '🏢', '🌍', '🗺️', '🧭',
+      // Travel and Places
+      travel: [
+        '✈️', '🚗', '🚢', '🏠', '🏢', '🌍', '🗺️', '🧭'
+      ],
       
-      // Health and sports
-      '⚽', '🏀', '🎾', '⛳', '🏋️', '🤸', '🧘', '❤️',
+      // Health and Sports
+      health: [
+        '⚽', '🏀', '🎾', '⛳', '🏋️', '🤸', '🧘', '❤️'
+      ],
       
-      // Music and entertainment
-      '🎵', '🎶', '🎸', '🎹', '🎤', '🎧', '🎮', '🕹️'
-    ];
+      // Music and Entertainment
+      entertainment: [
+        '🎵', '🎶', '🎸', '🎹', '🎤', '🎧', '🎮', '🕹️'
+      ]
+    };
 
-    let selectedEmoji = '🚀';
-    let selectedTheme = 'light';
+    /**
+     * Flatten all emoji categories into a single array
+     */
+    const ALL_EMOJIS = Object.values(EMOJI_CATEGORIES).flat();
 
-    // Initialize emojis
-    function initEmojis() {
-      const emojiGrid = document.getElementById('emoji-grid');
-      emojiList.forEach((emoji, index) => {
-        const emojiItem = document.createElement('div');
-        emojiItem.className = 'emoji-item';
-        emojiItem.textContent = emoji;
-        if (index === 0) emojiItem.classList.add('selected');
-        
-        emojiItem.addEventListener('click', () => {
-          document.querySelectorAll('.emoji-item').forEach(item => {
-            item.classList.remove('selected');
-          });
-          emojiItem.classList.add('selected');
-          selectedEmoji = emoji;
-        });
-        
-        emojiGrid.appendChild(emojiItem);
+    /**
+     * Plugin state management
+     */
+    const pluginState = {
+      selectedEmoji: '🚀',
+      selectedTheme: 'light',
+      isFormValid: false
+    };
+
+    /**
+     * DOM element references
+     */
+    const elements = {
+      titleInput: null,
+      descriptionInput: null,
+      createButton: null,
+      titleCounter: null,
+      descriptionCounter: null,
+      emojiGrid: null
+    };
+
+    /**
+     * Initialize DOM element references
+     */
+    function initializeElements() {
+      elements.titleInput = document.getElementById('title');
+      elements.descriptionInput = document.getElementById('description');
+      elements.createButton = document.getElementById('create');
+      elements.titleCounter = document.getElementById('title-counter');
+      elements.descriptionCounter = document.getElementById('description-counter');
+      elements.emojiGrid = document.getElementById('emoji-grid');
+    }
+
+    /**
+     * Create and populate emoji grid
+     */
+    function initializeEmojiGrid() {
+      if (!elements.emojiGrid) return;
+
+      elements.emojiGrid.innerHTML = '';
+      
+      ALL_EMOJIS.forEach((emoji, index) => {
+        const emojiElement = createEmojiElement(emoji, index === 0);
+        elements.emojiGrid.appendChild(emojiElement);
       });
     }
 
-    // Initialize theme
-    function initTheme() {
+    /**
+     * Create a single emoji element
+     */
+    function createEmojiElement(emoji, isSelected = false) {
+      const emojiElement = document.createElement('div');
+      emojiElement.className = `emoji-item ${isSelected ? 'selected' : ''}`;
+      emojiElement.textContent = emoji;
+      emojiElement.setAttribute('data-emoji', emoji);
+      emojiElement.setAttribute('title', `Select ${emoji}`);
+      
+      emojiElement.addEventListener('click', () => handleEmojiSelection(emoji, emojiElement));
+      
+      return emojiElement;
+    }
+
+    /**
+     * Handle emoji selection
+     */
+    function handleEmojiSelection(emoji, emojiElement) {
+      // Remove previous selection
+      const previouslySelected = elements.emojiGrid.querySelector('.emoji-item.selected');
+      if (previouslySelected) {
+        previouslySelected.classList.remove('selected');
+      }
+      
+      // Set new selection
+      emojiElement.classList.add('selected');
+      pluginState.selectedEmoji = emoji;
+    }
+
+    /**
+     * Initialize theme toggle functionality
+     */
+    function initializeThemeToggle() {
+      const themeOptions = document.querySelectorAll('.theme-option');
+      
+      themeOptions.forEach(option => {
+        option.addEventListener('click', () => handleThemeSelection(option));
+      });
+    }
+
+    /**
+     * Handle theme selection
+     */
+    function handleThemeSelection(selectedOption) {
+      // Remove active class from all options
       document.querySelectorAll('.theme-option').forEach(option => {
-        option.addEventListener('click', () => {
-          document.querySelectorAll('.theme-option').forEach(opt => {
-            opt.classList.remove('active');
-          });
-          option.classList.add('active');
-          selectedTheme = option.dataset.theme;
-        });
+        option.classList.remove('active');
       });
+      
+      // Add active class to selected option
+      selectedOption.classList.add('active');
+      pluginState.selectedTheme = selectedOption.dataset.theme;
     }
 
-    // Form validation and character counters
+    /**
+     * Validate form and update UI state
+     */
     function validateForm() {
-      const title = document.getElementById('title').value.trim();
-      const description = document.getElementById('description').value.trim();
-      const createBtn = document.getElementById('create');
-      const titleCounter = document.getElementById('title-counter');
-      const descriptionCounter = document.getElementById('description-counter');
+      if (!elements.titleInput || !elements.descriptionInput) return;
+
+      const title = elements.titleInput.value.trim();
+      const description = elements.descriptionInput.value.trim();
       
       // Update character counters
-      titleCounter.textContent = `${title.length}/20`;
-      descriptionCounter.textContent = `${description.length}/40`;
+      updateCharacterCounters(title, description);
       
-      // Enable/disable create button
-      if (title.length > 0) {
-        createBtn.disabled = false;
-      } else {
-        createBtn.disabled = true;
+      // Validate form
+      const isValid = title.length > 0;
+      pluginState.isFormValid = isValid;
+      
+      // Update create button state
+      if (elements.createButton) {
+        elements.createButton.disabled = !isValid;
       }
     }
 
-    // Event handlers
-    document.getElementById('title').addEventListener('input', validateForm);
-    document.getElementById('description').addEventListener('input', validateForm);
-
-    document.getElementById('create').addEventListener('click', () => {
-      const title = document.getElementById('title').value.trim();
-      const description = document.getElementById('description').value.trim();
-      
-      if (!title) {
-        return;
+    /**
+     * Update character counters
+     */
+    function updateCharacterCounters(title, description) {
+      if (elements.titleCounter) {
+        elements.titleCounter.textContent = `${title.length}/20`;
       }
+      
+      if (elements.descriptionCounter) {
+        elements.descriptionCounter.textContent = `${description.length}/40`;
+      }
+    }
 
+    /**
+     * Handle form submission
+     */
+    function handleFormSubmission() {
+      if (!pluginState.isFormValid) return;
+
+      const thumbnailData = {
+        title: elements.titleInput.value.trim(),
+        description: elements.descriptionInput.value.trim(),
+        emoji: pluginState.selectedEmoji,
+        theme: pluginState.selectedTheme
+      };
+
+      // Send message to plugin
       parent.postMessage({
         pluginMessage: {
           type: 'create-thumbnail',
-          data: {
-            title,
-            description,
-            emoji: selectedEmoji,
-            theme: selectedTheme
-          }
+          data: thumbnailData
         }
       }, '*');
-    });
+    }
 
-    // Initialization
-    initEmojis();
-    initTheme();
-    validateForm();
+    /**
+     * Initialize event listeners
+     */
+    function initializeEventListeners() {
+      if (elements.titleInput) {
+        elements.titleInput.addEventListener('input', validateForm);
+      }
+      
+      if (elements.descriptionInput) {
+        elements.descriptionInput.addEventListener('input', validateForm);
+      }
+      
+      if (elements.createButton) {
+        elements.createButton.addEventListener('click', handleFormSubmission);
+      }
+    }
+
+    /**
+     * Main initialization function
+     */
+    function initialize() {
+      initializeElements();
+      initializeEmojiGrid();
+      initializeThemeToggle();
+      initializeEventListeners();
+      validateForm();
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initialize);
+    } else {
+      initialize();
+    }
   </script>
 </body>
 </html>
+
