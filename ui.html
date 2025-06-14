@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8f9fa;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 320px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input {
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+      background: white;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .textarea {
+      resize: vertical;
+      min-height: 60px;
+      font-family: inherit;
+    }
+
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      padding: 12px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .emoji-item {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+
+    .emoji-item:hover {
+      background: #f3f4f6;
+    }
+
+    .emoji-item.selected {
+      background: #dbeafe;
+      border-color: #3b82f6;
+    }
+
+    .theme-toggle {
+      display: flex;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .theme-option {
+      flex: 1;
+      padding: 10px 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .theme-option.active {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .theme-option:not(.active) {
+      color: #6b7280;
+    }
+
+    .theme-option:not(.active):hover {
+      background: #f3f4f6;
+    }
+
+    .buttons {
+      margin-top: auto;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #2563eb;
+    }
+
+    .btn-primary:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    .required {
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Thumbly</h1>
+      <p>Создайте красивый thumbnail для вашего контента</p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Заголовок <span class="required">*</span>
+      </label>
+      <input 
+        type="text" 
+        id="title" 
+        class="form-input" 
+        placeholder="Введите заголовок..."
+        maxlength="50"
+        required
+      >
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Описание</label>
+      <textarea 
+        id="description" 
+        class="form-input textarea" 
+        placeholder="Добавьте описание (необязательно)..."
+        maxlength="120"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Эмодзи</label>
+      <div class="emoji-grid" id="emoji-grid">
+        <!-- Эмодзи будут добавлены через JavaScript -->
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Тема</label>
+      <div class="theme-toggle">
+        <button class="theme-option active" data-theme="light">
+          🌞 Светлая
+        </button>
+        <button class="theme-option" data-theme="dark">
+          🌚 Тёмная
+        </button>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-secondary" id="cancel">Отмена</button>
+      <button class="btn btn-primary" id="create" disabled>Создать</button>
+    </div>
+  </div>
+
+  <script>
+    // Список эмодзи
+    const emojiList = [
+      '🚀', '⭐', '💡', '🔥', '❤️', '👍',
+      '🎯', '📈', '🏆', '💯', '🌟', '⚡',
+      '🎨', '📱', '💻', '🖥️', '⌚', '🎮',
+      '📚', '🎓', '🔬', '🧠', '💰', '💎',
+      '🌍', '🌈', '☀️', '🌙', '🎉', '🎊',
+      '🏠', '🚗', '✈️', '🎸', '🎵', '🎪'
+    ];
+
+    let selectedEmoji = '🚀';
+    let selectedTheme = 'light';
+
+    // Инициализация эмодзи
+    function initEmojis() {
+      const emojiGrid = document.getElementById('emoji-grid');
+      emojiList.forEach((emoji, index) => {
+        const emojiItem = document.createElement('div');
+        emojiItem.className = 'emoji-item';
+        emojiItem.textContent = emoji;
+        if (index === 0) emojiItem.classList.add('selected');
+        
+        emojiItem.addEventListener('click', () => {
+          document.querySelectorAll('.emoji-item').forEach(item => {
+            item.classList.remove('selected');
+          });
+          emojiItem.classList.add('selected');
+          selectedEmoji = emoji;
+        });
+        
+        emojiGrid.appendChild(emojiItem);
+      });
+    }
+
+    // Инициализация темы
+    function initTheme() {
+      document.querySelectorAll('.theme-option').forEach(option => {
+        option.addEventListener('click', () => {
+          document.querySelectorAll('.theme-option').forEach(opt => {
+            opt.classList.remove('active');
+          });
+          option.classList.add('active');
+          selectedTheme = option.dataset.theme;
+        });
+      });
+    }
+
+    // Валидация формы
+    function validateForm() {
+      const title = document.getElementById('title').value.trim();
+      const createBtn = document.getElementById('create');
+      
+      if (title.length > 0) {
+        createBtn.disabled = false;
+      } else {
+        createBtn.disabled = true;
+      }
+    }
+
+    // Обработчики событий
+    document.getElementById('title').addEventListener('input', validateForm);
+
+    document.getElementById('create').addEventListener('click', () => {
+      const title = document.getElementById('title').value.trim();
+      const description = document.getElementById('description').value.trim();
+      
+      if (!title) {
+        alert('Пожалуйста, введите заголовок');
+        return;
+      }
+
+      parent.postMessage({
+        pluginMessage: {
+          type: 'create-thumbnail',
+          data: {
+            title,
+            description,
+            emoji: selectedEmoji,
+            theme: selectedTheme
+          }
+        }
+      }, '*');
+    });
+
+    document.getElementById('cancel').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    });
+
+    // Инициализация
+    initEmojis();
+    initTheme();
+    validateForm();
+  </script>
+</body>
+</html>
