@@ -76,6 +76,9 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .form-input {
@@ -100,9 +103,17 @@
     }
 
     .textarea {
-      resize: vertical;
+      resize: none;
       min-height: 60px;
       font-family: inherit;
+    }
+
+    .char-counter {
+      font-size: 11px;
+      color: #999999;
+      font-weight: normal;
+      text-transform: none;
+      letter-spacing: normal;
     }
 
     .emoji-section {
@@ -122,13 +133,37 @@
       overflow-x: hidden;
     }
 
+    /* Beautiful scrollbar for emoji grid */
+    .emoji-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .emoji-grid::-webkit-scrollbar-track {
+      background: #f8f8f8;
+      border-radius: 3px;
+    }
+
+    .emoji-grid::-webkit-scrollbar-thumb {
+      background: #d1d5db;
+      border-radius: 3px;
+      transition: background-color 0.2s ease;
+    }
+
+    .emoji-grid::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
+    }
+
+    .emoji-grid::-webkit-scrollbar-thumb:active {
+      background: #6b7280;
+    }
+
     .emoji-item {
-      width: 30px;
-      height: 30px;
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 18px;
       cursor: pointer;
       border-radius: 4px;
       transition: all 0.15s ease;
@@ -270,32 +305,35 @@
 
       <div class="form-group">
         <label class="form-label">
-          Title <span class="required">*</span>
+          <span>Title <span class="required">*</span></span>
+          <span class="char-counter" id="title-counter">0/20</span>
         </label>
         <input 
           type="text" 
           id="title" 
           class="form-input" 
           placeholder="Project name..."
-          maxlength="50"
+          maxlength="20"
           required
         >
       </div>
 
       <div class="form-group">
-        <label class="form-label">Description</label>
+        <label class="form-label">
+          <span>Description</span>
+          <span class="char-counter" id="description-counter">0/40</span>
+        </label>
         <textarea 
           id="description" 
           class="form-input textarea" 
           placeholder="Brief project description..."
-          maxlength="120"
+          maxlength="40"
         ></textarea>
       </div>
 
       <div class="form-group">
         <label class="form-label">
-          <span class="component-tag">Icon</span>
-          Choose emoji for project
+          <span>Choose emoji for project</span>
         </label>
         <div class="emoji-section">
           <div class="emoji-grid" id="emoji-grid">
@@ -398,11 +436,19 @@
       });
     }
 
-    // Form validation
+    // Form validation and character counters
     function validateForm() {
       const title = document.getElementById('title').value.trim();
+      const description = document.getElementById('description').value.trim();
       const createBtn = document.getElementById('create');
+      const titleCounter = document.getElementById('title-counter');
+      const descriptionCounter = document.getElementById('description-counter');
       
+      // Update character counters
+      titleCounter.textContent = `${title.length}/20`;
+      descriptionCounter.textContent = `${description.length}/40`;
+      
+      // Enable/disable create button
       if (title.length > 0) {
         createBtn.disabled = false;
       } else {
@@ -412,6 +458,7 @@
 
     // Event handlers
     document.getElementById('title').addEventListener('input', validateForm);
+    document.getElementById('description').addEventListener('input', validateForm);
 
     document.getElementById('create').addEventListener('click', () => {
       const title = document.getElementById('title').value.trim();
